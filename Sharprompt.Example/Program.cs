@@ -46,6 +46,15 @@ class Program
                 case ExampleType.Bind:
                     RunBindSample();
                     break;
+                case ExampleType.BindWithAttributeFilterExpress:
+                    RunBindWithAttributeFilterExpressSample();
+                    break;
+                case ExampleType.BindWithAttributeFilterAdvanced:
+                    RunBindWithAttributeFilterAdvancedSample();
+                    break;
+                case ExampleType.BindWithAttributeFilterExpressAndAdvanced:
+                    RunBindWithAttributeFilterExpressAndAdvancedSample();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -103,6 +112,24 @@ class Program
     private static void RunBindSample()
     {
         var model = Prompt.Bind<MyFormModel>();
+        Console.WriteLine($"Forms OK, {JsonSerializer.Serialize(model)}");
+    }
+
+    private static void RunBindWithAttributeFilterExpressSample()
+    {
+        var model = Prompt.Bind<MyFormModel>([typeof(PromptSetupExpress)]);
+        Console.WriteLine($"Forms OK, {JsonSerializer.Serialize(model)}");
+    }
+
+    private static void RunBindWithAttributeFilterAdvancedSample()
+    {
+        var model = Prompt.Bind<MyFormModel>([typeof(PromptSetupAdvanced)]);
+        Console.WriteLine($"Forms OK, {JsonSerializer.Serialize(model)}");
+    }
+
+    private static void RunBindWithAttributeFilterExpressAndAdvancedSample()
+    {
+        var model = Prompt.Bind<MyFormModel>([typeof(PromptSetupExpress), typeof(PromptSetupAdvanced)]);
         Console.WriteLine($"Forms OK, {JsonSerializer.Serialize(model)}");
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Metadata;
 
 using Sharprompt.Forms;
 using Sharprompt.Internal;
@@ -9,23 +10,23 @@ namespace Sharprompt;
 
 public static partial class Prompt
 {
-    public static T Bind<T>() where T : notnull, new()
+    public static T Bind<T>(Type[]? attributeFilter = null) where T : notnull, new()
     {
         var model = new T();
 
-        return Bind(model);
+        return Bind(model, attributeFilter);
     }
 
-    public static T Bind<T>(T model) where T : notnull
+    public static T Bind<T>(T model, Type[]? attributeFilter = null) where T : notnull
     {
-        StartBind(model);
+        StartBind(model, attributeFilter);
 
         return model;
     }
 
-    private static void StartBind<T>(T model) where T : notnull
+    private static void StartBind<T>(T model, Type[]? attributeFilter = null) where T : notnull
     {
-        var propertyMetadatas = PropertyMetadataFactory.Create(model);
+        var propertyMetadatas = PropertyMetadataFactory.Create(model, attributeFilter);
 
         foreach (var propertyMetadata in propertyMetadatas)
         {

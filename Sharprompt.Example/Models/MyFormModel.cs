@@ -13,15 +13,18 @@ public class MyFormModel
 
     [Display(Name = "What's your name?", Prompt = "Required", Order = 1)]
     [Required]
+    [PromptSetupExpress]
     public string Name { get; set; } = null!;
 
     [Display(Name = "Type new password", Order = 2)]
     [DataType(DataType.Password)]
     [Required]
     [MinLength(8)]
+    [PromptSetupExpress]
     public string Password { get; set; } = null!;
 
     [Display(Name = "Select enum value", Order = 3)]
+    [PromptSetupAdvanced]
     public MyEnum? MyEnum { get; set; }
 
     [Display(Name = "Select enum values", Order = 4)]
