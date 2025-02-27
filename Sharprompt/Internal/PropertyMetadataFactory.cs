@@ -6,7 +6,6 @@ namespace Sharprompt.Internal;
 
 internal static class PropertyMetadataFactory
 {
-    // With SkillLevelAttribute filtering using Enum
     public static IReadOnlyList<PropertyMetadata> Create<T>(T model) where T : notnull
     {
         var properties = typeof(T)
