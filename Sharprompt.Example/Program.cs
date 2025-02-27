@@ -4,6 +4,8 @@ using System.Text.Json;
 
 using Sharprompt.Example.Models;
 
+using static Sharprompt.Enums;
+
 namespace Sharprompt.Example;
 
 // ReSharper disable LocalizableElement
@@ -15,7 +17,11 @@ class Program
 
         while (true)
         {
-            var type = Prompt.Select<ExampleType>("Choose prompt example");
+            //Prompt.SkillLevel = Prompt.Select<SkillLevel>("Choose your skills", defaultValue: SkillLevel.Advanced);
+
+            Prompt.SkillLevel = SkillLevel.Advanced;
+
+            var type = Prompt.Select<ExampleType>("Choose prompt example", defaultValue: ExampleType.Bind);
 
             switch (type)
             {
@@ -46,14 +52,8 @@ class Program
                 case ExampleType.Bind:
                     RunBindSample();
                     break;
-                case ExampleType.BindWithAttributeFilterExpress:
-                    RunBindWithAttributeFilterExpressSample();
-                    break;
-                case ExampleType.BindWithAttributeFilterAdvanced:
-                    RunBindWithAttributeFilterAdvancedSample();
-                    break;
-                case ExampleType.BindWithAttributeFilterExpressAndAdvanced:
-                    RunBindWithAttributeFilterExpressAndAdvancedSample();
+                case ExampleType.BindProperty:
+                    RunBindPropertySample();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -115,21 +115,12 @@ class Program
         Console.WriteLine($"Forms OK, {JsonSerializer.Serialize(model)}");
     }
 
-    private static void RunBindWithAttributeFilterExpressSample()
+    private static void RunBindPropertySample()
     {
-        var model = Prompt.Bind<MyFormModel>([typeof(PromptSetupExpress)]);
-        Console.WriteLine($"Forms OK, {JsonSerializer.Serialize(model)}");
-    }
+        var model = new MyFormModel();
 
-    private static void RunBindWithAttributeFilterAdvancedSample()
-    {
-        var model = Prompt.Bind<MyFormModel>([typeof(PromptSetupAdvanced)]);
-        Console.WriteLine($"Forms OK, {JsonSerializer.Serialize(model)}");
-    }
+        var result = Prompt.BindProperty(model, nameof(model.Name));
 
-    private static void RunBindWithAttributeFilterExpressAndAdvancedSample()
-    {
-        var model = Prompt.Bind<MyFormModel>([typeof(PromptSetupExpress), typeof(PromptSetupAdvanced)]);
         Console.WriteLine($"Forms OK, {JsonSerializer.Serialize(model)}");
     }
 }

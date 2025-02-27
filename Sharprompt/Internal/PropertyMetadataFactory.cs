@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
@@ -9,24 +11,21 @@ namespace Sharprompt.Internal;
 
 internal static class PropertyMetadataFactory
 {
-    public static IReadOnlyList<PropertyMetadata> Create<T>(T model, Type[]? attributeFilter = null) where T : notnull
+    // With SkillLevelAttribute filtering using Enum
+    public static IReadOnlyList<PropertyMetadata> Create<T>(T model) where T : notnull
     {
-        //return typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
-        //                .Where(x => x.CanWrite && x.GetCustomAttribute<BindIgnoreAttribute>() is null)
-        //                .Select(x => new PropertyMetadata(model, x))
-        //                .OrderBy(x => x.Order)
-        //                .ToArray();
-
         var properties = typeof(T)
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .Where(x => x.CanWrite && x.GetCustomAttribute<BindIgnoreAttribute>() is null);
+            .Where(property => property.CanWrite && property.GetCustomAttribute<BindIgnoreAttribute>() is null)
+            .Where(property =>
+            {
+                var skillLevelAttribute = property.GetCustomAttribute<SkillLevelAttribute>();
+                return skillLevelAttribute is null || Prompt.SkillLevel >= skillLevelAttribute.SkillLevel;
+            })
+            .Select(property => new PropertyMetadata(model, property))
+            .OrderBy(metadata => metadata.Order)
+            .ToArray();
 
-        if (attributeFilter != null)
-        {
-            properties = properties
-            .Where(x => attributeFilter.Any(attr => x.GetCustomAttributes(attr, false).Length != 0));
-        }
-
-        return [.. properties.Select(x => new PropertyMetadata(model, x)).OrderBy(x => x.Order)];
+        return properties;
     }
 }

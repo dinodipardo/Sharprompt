@@ -10,23 +10,23 @@ namespace Sharprompt;
 
 public static partial class Prompt
 {
-    public static T Bind<T>(Type[]? attributeFilter = null) where T : notnull, new()
+    public static T Bind<T>() where T : notnull, new()
     {
         var model = new T();
 
-        return Bind(model, attributeFilter);
+        return Bind(model);
     }
 
-    public static T Bind<T>(T model, Type[]? attributeFilter = null) where T : notnull
+    public static T Bind<T>(T model) where T : notnull
     {
-        StartBind(model, attributeFilter);
+        StartBind(model);
 
         return model;
     }
 
-    private static void StartBind<T>(T model, Type[]? attributeFilter = null) where T : notnull
+    private static void StartBind<T>(T model) where T : notnull
     {
-        var propertyMetadatas = PropertyMetadataFactory.Create(model, attributeFilter);
+        var propertyMetadatas = PropertyMetadataFactory.Create(model);
 
         foreach (var propertyMetadata in propertyMetadatas)
         {

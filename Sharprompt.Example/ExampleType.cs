@@ -11,7 +11,5 @@ public enum ExampleType
     MultiSelectWithEnum,
     List,
     Bind,
-    BindWithAttributeFilterExpress,
-    BindWithAttributeFilterAdvanced,
-    BindWithAttributeFilterExpressAndAdvanced,
+    BindProperty,
 }

@@ -3,11 +3,15 @@ using System.Globalization;
 
 using Sharprompt.Strings;
 
+using static Sharprompt.Enums;
+
 namespace Sharprompt;
 
 public static partial class Prompt
 {
     public static bool ThrowExceptionOnCancel { get; set; } = false;
+
+    public static SkillLevel SkillLevel { get; set; } = SkillLevel.None;
 
     public static CultureInfo Culture
     {
