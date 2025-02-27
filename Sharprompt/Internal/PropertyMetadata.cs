@@ -18,7 +18,7 @@ internal class PropertyMetadata
 
         PropertyInfo = propertyInfo;
         Type = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
-        ElementType = TypeHelper.IsCollection(propertyInfo.PropertyType) ? propertyInfo.PropertyType.GetGenericArguments()[0] : null;
+        ElementType = TypeHelper.IsCollection(propertyInfo.PropertyType) ? propertyInfo.PropertyType.GetGenericArguments().FirstOrDefault() : null;
         IsNullable = TypeHelper.IsNullable(propertyInfo.PropertyType);
         IsCollection = TypeHelper.IsCollection(propertyInfo.PropertyType);
         DataType = propertyInfo.GetCustomAttribute<DataTypeAttribute>()?.DataType;
