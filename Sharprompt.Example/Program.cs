@@ -17,11 +17,9 @@ class Program
 
         while (true)
         {
-            //Prompt.SkillLevel = Prompt.Select<SkillLevel>("Choose your skills", defaultValue: SkillLevel.Advanced);
+            Prompt.SkillLevel = Prompt.Select<SkillLevel>("Choose your skills", defaultValue: SkillLevel.Advanced);
 
-            Prompt.SkillLevel = SkillLevel.Advanced;
-
-            var type = Prompt.Select<ExampleType>("Choose prompt example", defaultValue: ExampleType.Bind);
+            var type = Prompt.Select<ExampleType>("Choose prompt example", defaultValue: ExampleType.BindProperty);
 
             switch (type)
             {
