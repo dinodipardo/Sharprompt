@@ -9,6 +9,16 @@ namespace Sharprompt;
 
 public static partial class Prompt
 {
+    static Prompt()
+    {
+        Resource.Culture = CultureInfo.CurrentCulture;
+
+        // Example case to prevent the value 'Other'
+        if (DefaultValueTabBehaviour == DefaultValueTabBehaviour.Configuration)
+        {
+            throw new InvalidOperationException($"The value '{DefaultValueTabBehaviour.Configuration}' is not allowed for '{nameof(DefaultValueTabBehaviour)}'.");
+        }
+    }
     public static bool ThrowExceptionOnCancel { get; set; } = false;
 
     public static SkillLevel SkillLevel { get; set; } = SkillLevel.None;

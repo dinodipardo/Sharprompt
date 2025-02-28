@@ -12,7 +12,19 @@ public class InputOptions<T>
 
     public object? DefaultValue { get; set; }
 
-    public DefaultValueTabBehaviour DefaultValueTabBehaviour { get; set; } = Prompt.DefaultValueTabBehaviour;
+    public DefaultValueTabBehaviour DefaultValueTabBehaviour
+    {
+        get => _defaultValueTabBehaviour;
+        set
+        {
+            if (value == DefaultValueTabBehaviour.Configuration)
+            {
+                value = Prompt.DefaultValueTabBehaviour;
+            }
+            _defaultValueTabBehaviour = value;
+        }
+    }
+    private DefaultValueTabBehaviour _defaultValueTabBehaviour;
 
     public IList<Func<object?, ValidationResult?>> Validators { get; } = [];
 

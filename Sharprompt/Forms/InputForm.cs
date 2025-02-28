@@ -40,7 +40,7 @@ internal class InputForm<T> : TextFormBase<T>
                     offscreenBuffer.WriteHint($"({_defaultValue.Value} - Tab to delete) ");
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(_options.DefaultValueTabBehaviour), _options.DefaultValueTabBehaviour, "Invalid value for argument 'DefaultValueTabBehaviour'");
             }
         }
 
