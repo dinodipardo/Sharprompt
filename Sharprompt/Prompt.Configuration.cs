@@ -13,6 +13,8 @@ public static partial class Prompt
 
     public static SkillLevel SkillLevel { get; set; } = SkillLevel.None;
 
+    public static DefaultValueTabBehaviour DefaultValueTabBehaviour { get; set; } = DefaultValueTabBehaviour.None;
+
     public static CultureInfo Culture
     {
         get => Resource.Culture;

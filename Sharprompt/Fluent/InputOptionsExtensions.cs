@@ -35,4 +35,11 @@ public static class InputOptionsExtensions
 
         return options;
     }
+
+    public static InputOptions<T> WithDefaultTabBehaviour<T>(this InputOptions<T> options, DefaultValueTabBehaviour defaultTabBehaviour = DefaultValueTabBehaviour.Configuration)
+    {
+        options.DefaultValueTabBehaviour = defaultTabBehaviour;
+
+        return options;
+    }
 }

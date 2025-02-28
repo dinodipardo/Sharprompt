@@ -30,6 +30,8 @@ internal class PropertyMetadata
                                  .Select(x => new ValidationAttributeAdapter(x).GetValidator(propertyInfo.Name, model))
                                  .ToArray();
         ItemsProvider = GetItemsProvider(propertyInfo);
+
+        DefaultValueTabBehaviour = propertyInfo.GetCustomAttribute<DefaultValueTabBehaviourAttribute>()?.TabBehaviour ?? DefaultValueTabBehaviour.Configuration;
     }
 
     public PropertyInfo PropertyInfo { get; }
@@ -44,6 +46,8 @@ internal class PropertyMetadata
     public object? DefaultValue { get; }
     public IReadOnlyList<Func<object?, ValidationResult?>> Validators { get; }
     public IItemsProvider ItemsProvider { get; }
+
+    public DefaultValueTabBehaviour DefaultValueTabBehaviour { get; }
 
     public FormType DetermineFormType()
     {

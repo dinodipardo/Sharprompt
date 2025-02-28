@@ -9,5 +9,5 @@ public sealed class SkillLevelAttribute : Attribute
 {
     public SkillLevelAttribute(SkillLevel level = SkillLevel.None) => SkillLevel = level;
 
-    public Enums.SkillLevel SkillLevel { get; }
+    public SkillLevel SkillLevel { get; }
 }

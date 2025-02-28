@@ -16,6 +16,7 @@ public class MyFormModel
     [Display(Name = "What's your name?", Prompt = "Required", Order = 1)]
     [Required]
     [SkillLevel(SkillLevel.None)]
+    [DefaultValueTabBehaviour(DefaultValueTabBehaviour.TabToSelect)]
     public string Name { get; set; } = null!;
 
     [Display(Name = "Type new password", Order = 2)]

@@ -25,7 +25,7 @@ public static partial class Prompt
         return Input(options);
     }
 
-    public static T Input<T>(string message, object? defaultValue = default, DefaultValueTabBehaviour defaultValueTabBehaviour = DefaultValueTabBehaviour.TabToReset, string? placeholder = default, IList<Func<object?, ValidationResult?>>? validators = default)
+    public static T Input<T>(string message, object? defaultValue = default, DefaultValueTabBehaviour defaultValueTabBehaviour = DefaultValueTabBehaviour.Configuration, string? placeholder = default, IList<Func<object?, ValidationResult?>>? validators = default)
     {
         return Input<T>(options =>
         {
@@ -33,7 +33,7 @@ public static partial class Prompt
             options.Placeholder = placeholder;
             options.DefaultValue = defaultValue;
 
-            options.DefaultValueTabBehaviour = defaultValueTabBehaviour;
+            options.DefaultValueTabBehaviour =  defaultValueTabBehaviour;
 
             options.Validators.Merge(validators);
         });

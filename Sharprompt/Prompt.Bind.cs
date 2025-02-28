@@ -65,7 +65,7 @@ public static partial class Prompt
             options.Message = propertyMetadata.Message;
             options.DefaultValue = propertyMetadata.DefaultValue;
             options.Placeholder = propertyMetadata.Placeholder;
-
+            options.DefaultValueTabBehaviour = propertyMetadata.DefaultValueTabBehaviour;
             options.Validators.Merge(propertyMetadata.Validators);
         });
     }

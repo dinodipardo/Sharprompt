@@ -12,9 +12,9 @@ public class InputOptions<T>
 
     public object? DefaultValue { get; set; }
 
-    public DefaultValueTabBehaviour DefaultValueTabBehaviour { get; set; } = DefaultValueTabBehaviour.None;
+    public DefaultValueTabBehaviour DefaultValueTabBehaviour { get; set; } = Prompt.DefaultValueTabBehaviour;
 
-    public IList<Func<object?, ValidationResult?>> Validators { get; } = new List<Func<object?, ValidationResult?>>();
+    public IList<Func<object?, ValidationResult?>> Validators { get; } = [];
 
     internal void EnsureOptions()
     {
