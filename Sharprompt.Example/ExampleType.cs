@@ -3,6 +3,8 @@
 public enum ExampleType
 {
     Input,
+    InputWithDefaultValueTabToReset,
+    InputWithDefaultValueTabToSelect,
     Confirm,
     Password,
     Select,

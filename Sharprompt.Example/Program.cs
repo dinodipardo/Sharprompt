@@ -19,12 +19,18 @@ class Program
         {
             Prompt.SkillLevel = Prompt.Select<SkillLevel>("Choose your skills", defaultValue: SkillLevel.Advanced);
 
-            var type = Prompt.Select<ExampleType>("Choose prompt example", defaultValue: ExampleType.BindProperty);
+            var type = Prompt.Select<ExampleType>("Choose prompt example", defaultValue: ExampleType.Input);
 
             switch (type)
             {
                 case ExampleType.Input:
                     RunInputSample();
+                    break;
+                case ExampleType.InputWithDefaultValueTabToReset:
+                    RunInputSampleWithDefaultValueTabToReset();
+                    break;
+                case ExampleType.InputWithDefaultValueTabToSelect:
+                    RunInputSampleWithDefaultValueTabToSelect();
                     break;
                 case ExampleType.Confirm:
                     RunConfirmSample();
@@ -63,6 +69,17 @@ class Program
     {
         var name = Prompt.Input<string>("What's your name?", defaultValue: "John Smith", placeholder: "At least 3 characters", validators: [Validators.Required(), Validators.MinLength(3)]);
         Console.WriteLine($"Hello, {name}!");
+    }
+    private static void RunInputSampleWithDefaultValueTabToReset()
+    {
+        var colour = Prompt.Input<string>("What's your favourite colour?", defaultValue: "blue", DefaultValueTabBehaviour.TabToReset);
+        Console.WriteLine($"Your answer is: {colour}!");
+    }
+
+    private static void RunInputSampleWithDefaultValueTabToSelect()
+    {
+        var colour = Prompt.Input<string>("What's your favourite colour?", defaultValue: "blue", DefaultValueTabBehaviour.TabToSelect);
+        Console.WriteLine($"Your answer is: {colour}!");
     }
 
     private static void RunConfirmSample()

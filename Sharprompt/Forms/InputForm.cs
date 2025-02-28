@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-
+using System.Reflection;
 using Sharprompt.Internal;
 using Sharprompt.Strings;
 
@@ -10,6 +10,8 @@ internal class InputForm<T> : TextFormBase<T>
 {
     public InputForm(InputOptions<T> options)
     {
+        KeyHandlerMaps.Add(ConsoleKey.Tab, HandleTab);
+
         options.EnsureOptions();
 
         _options = options;
@@ -18,7 +20,7 @@ internal class InputForm<T> : TextFormBase<T>
     }
 
     private readonly InputOptions<T> _options;
-    private readonly Optional<T> _defaultValue;
+    private readonly Optional<T> _defaultValue; //readonly
 
     protected override void InputTemplate(OffscreenBuffer offscreenBuffer)
     {
@@ -26,7 +28,20 @@ internal class InputForm<T> : TextFormBase<T>
 
         if (_defaultValue.HasValue)
         {
-            offscreenBuffer.WriteHint($"({_defaultValue.Value}) ");
+            switch (_options.DefaultValueTabBehaviour)
+            {
+                case DefaultValueTabBehaviour.None:
+                    offscreenBuffer.WriteHint($"({_defaultValue.Value}) ");
+                    break;
+                case DefaultValueTabBehaviour.TabToSelect:
+                    offscreenBuffer.WriteHint($"({_defaultValue.Value} - Tab to select) ");
+                    break;
+                case DefaultValueTabBehaviour.TabToReset:
+                    offscreenBuffer.WriteHint($"({_defaultValue.Value} - Tab to delete) ");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         if (InputBuffer.Length == 0 && !string.IsNullOrEmpty(_options.Placeholder))
@@ -65,7 +80,18 @@ internal class InputForm<T> : TextFormBase<T>
                     return false;
                 }
 
-                result = _defaultValue;
+                switch(_options.DefaultValueTabBehaviour)
+                {
+                    case DefaultValueTabBehaviour.TabToSelect:
+                    case DefaultValueTabBehaviour.TabToReset:
+                        result = default;
+                        break;
+                    default:
+                        result = _defaultValue;
+                        break;
+                }
+
+                //result = _options.DefaultValueTabBehaviour == DefaultValueTabBehaviour.TabToSelect ? default : _defaultValue;
             }
             else
             {
@@ -82,5 +108,36 @@ internal class InputForm<T> : TextFormBase<T>
         result = default;
 
         return false;
+    }
+
+    protected bool HandleTab(ConsoleKeyInfo keyInfo)
+    {
+        if (_defaultValue.HasValue)
+        {
+            switch (_options.DefaultValueTabBehaviour)
+            {
+                case DefaultValueTabBehaviour.TabToSelect:
+                    // In case of tab to select, we need to set the default value as the current value
+                    var defaultStringValue = _defaultValue.Value?.ToString() ?? ""; // ?? "" to avoid null reference exception
+                    InputBuffer.Clear();
+                    foreach (var c in defaultStringValue)
+                    {
+                        InputBuffer.Insert(c);
+                    }
+                    break;
+                case DefaultValueTabBehaviour.TabToReset:
+                    // Use reflection to reset the readonly field _defaultValue to its default
+                    var fieldInfo = typeof(InputForm<T>)
+                        .GetField("_defaultValue", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
+                    fieldInfo?.SetValue(this, default);
+                    break;
+                default:
+                    // Do nothing
+                    break;
+            }
+        }
+
+        return true;
     }
 }
