@@ -34,10 +34,10 @@ internal class InputForm<T> : TextFormBase<T>
                     offscreenBuffer.WriteHint($"({_defaultValue.Value}) ");
                     break;
                 case DefaultValueTabBehaviour.TabToSelect:
-                    offscreenBuffer.WriteHint($"({_defaultValue.Value} - Tab to select) ");
+                    offscreenBuffer.WriteHint($"({_defaultValue.Value} <Tab> to select) ");
                     break;
                 case DefaultValueTabBehaviour.TabToReset:
-                    offscreenBuffer.WriteHint($"({_defaultValue.Value} - Tab to delete) ");
+                    offscreenBuffer.WriteHint($"({_defaultValue.Value} <Tab> to delete) ");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_options.DefaultValueTabBehaviour), _options.DefaultValueTabBehaviour, "Invalid value for argument 'DefaultValueTabBehaviour'");
