@@ -16,7 +16,7 @@
     <PackageTags>cli;command-line;console;interactive;prompt;terminal</PackageTags>
     <RepositoryUrl>https://github.com/shibayan/Sharprompt</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>1.0.0.100</AssemblyVersion>
+    <AssemblyVersion>1.0.0.103</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

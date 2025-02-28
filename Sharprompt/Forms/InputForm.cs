@@ -20,7 +20,7 @@ internal class InputForm<T> : TextFormBase<T>
     }
 
     private readonly InputOptions<T> _options;
-    private readonly Optional<T> _defaultValue; //readonly
+    private readonly Optional<T> _defaultValue;
 
     protected override void InputTemplate(OffscreenBuffer offscreenBuffer)
     {
@@ -128,7 +128,7 @@ internal class InputForm<T> : TextFormBase<T>
                 case DefaultValueTabBehaviour.TabToReset:
                     // Use reflection to reset the readonly field _defaultValue to its default
                     var fieldInfo = typeof(InputForm<T>)
-                        .GetField("_defaultValue", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                        .GetField("_defaultValue", BindingFlags.Instance | BindingFlags.NonPublic);
 
                     fieldInfo?.SetValue(this, default);
                     break;
