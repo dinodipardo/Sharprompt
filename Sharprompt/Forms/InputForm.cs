@@ -80,18 +80,7 @@ internal class InputForm<T> : TextFormBase<T>
                     return false;
                 }
 
-                switch(_options.DefaultValueTabBehaviour)
-                {
-                    case DefaultValueTabBehaviour.TabToSelect:
-                    case DefaultValueTabBehaviour.TabToReset:
-                        result = default;
-                        break;
-                    default:
-                        result = _defaultValue;
-                        break;
-                }
-
-                //result = _options.DefaultValueTabBehaviour == DefaultValueTabBehaviour.TabToSelect ? default : _defaultValue;
+                result = _options.DefaultValueTabBehaviour == DefaultValueTabBehaviour.TabToSelect ? default : _defaultValue;
             }
             else
             {
