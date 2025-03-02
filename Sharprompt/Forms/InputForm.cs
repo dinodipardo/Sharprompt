@@ -101,30 +101,38 @@ internal class InputForm<T> : TextFormBase<T>
 
     protected bool HandleTab(ConsoleKeyInfo keyInfo)
     {
-        if (_defaultValue.HasValue)
-        {
-            switch (_options.DefaultValueTabBehaviour)
-            {
-                case DefaultValueTabBehaviour.TabToSelect:
-                    // In case of tab to select, we need to set the default value as the current value
-                    var defaultStringValue = _defaultValue.Value?.ToString() ?? ""; // ?? "" to avoid null reference exception
-                    InputBuffer.Clear();
-                    foreach (var c in defaultStringValue)
-                    {
-                        InputBuffer.Insert(c);
-                    }
-                    break;
-                case DefaultValueTabBehaviour.TabToReset:
-                    // Use reflection to reset the readonly field _defaultValue to its default
-                    var fieldInfo = typeof(InputForm<T>)
-                        .GetField("_defaultValue", BindingFlags.Instance | BindingFlags.NonPublic);
+        // Determine the tab behaviour based on configuration or prompt default.
+        var tabBehaviour = _options.DefaultValueTabBehaviour == DefaultValueTabBehaviour.Configuration
+            ? Prompt.DefaultValueTabBehaviour
+            : _options.DefaultValueTabBehaviour;
 
-                    fieldInfo?.SetValue(this, default);
-                    break;
-                default:
-                    // Do nothing
-                    break;
-            }
+        // If no default value is set, simply return.
+        if (!_defaultValue.HasValue)
+        {
+            return true;
+        }
+
+        switch (tabBehaviour)
+        {
+            case DefaultValueTabBehaviour.TabToSelect:
+                // Set the current input buffer to the default value.
+                var defaultString = _defaultValue.Value?.ToString() ?? "";
+                InputBuffer.Clear();
+                foreach (var ch in defaultString)
+                {
+                    InputBuffer.Insert(ch);
+                }
+                break;
+
+            case DefaultValueTabBehaviour.TabToReset:
+                // Reset the readonly _defaultValue field via reflection.
+                var fieldInfo = typeof(InputForm<T>).GetField("_defaultValue", BindingFlags.Instance | BindingFlags.NonPublic);
+                fieldInfo?.SetValue(this, default);
+                break;
+
+            default:
+                // No action is taken for unspecified behaviours.
+                break;
         }
 
         return true;
