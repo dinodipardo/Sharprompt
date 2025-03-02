@@ -2,8 +2,8 @@
 
 public enum DefaultValueTabBehaviour
 {
-    Configuration,
     None,
+    Configuration,
     TabToSelect,
     TabToReset,
 }
