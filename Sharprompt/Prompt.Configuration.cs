@@ -21,7 +21,7 @@ public static partial class Prompt
     }
     public static bool ThrowExceptionOnCancel { get; set; } = false;
 
-    public static SkillLevel SkillLevel { get; set; } = SkillLevel.None;
+    public static SkillLevel SkillLevel { get; set; } = SkillLevel.Expert;
 
     public static DefaultValueTabBehaviour DefaultValueTabBehaviour { get; set; } = DefaultValueTabBehaviour.None;
 
