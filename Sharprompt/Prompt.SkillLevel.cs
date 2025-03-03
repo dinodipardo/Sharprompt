@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 using Sharprompt.Forms;
@@ -28,8 +29,6 @@ public static partial class Enums
 
     public enum SkillLevel
     {
-        [Display(Name = "None")]
-        None = 0,
         [Display(Name = "Beginner")]
         Beginner = 1,
         [Display(Name = "Advanced")]
@@ -38,5 +37,7 @@ public static partial class Enums
         Expert = 3,
         [Display(Name = "Developer")]
         Developer = 4,
+        [Display(Name = "None")]
+        None = int.MaxValue,
     }
 }
