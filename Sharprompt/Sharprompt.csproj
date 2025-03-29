@@ -65,4 +65,40 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <!--Call IntelliLock & .NET Reactor via command-line-->
+  <PropertyGroup>
+    <IntelliLockLocation>"C:\Program Files (x86)\Eziriz\IntelliLock\INTELLILOCK.exe"</IntelliLockLocation>
+    <IntelliLockProject>"$(OneDriveCommercial)\Work\PsaTools\LicenseGenerator\PsaTools.ilproj"</IntelliLockProject>
+    <ReactorLocation>"C:\Program Files (x86)\Eziriz\.NET Reactor\dotNET_Reactor.Console.exe"</ReactorLocation>
+    <ReactorProject>"$(OneDriveCommercial)\Work\PsaTools\Obfuscation\PsaTools.nrproj"</ReactorProject>
+  </PropertyGroup>
+
+  <Target Name="LockAssemblies" AfterTargets="AfterCompile" BeforeTargets="ProtectAssemblies">
+    <Sleep Delay="200" />
+    <!--Call IntelliLock-->
+    <Message Importance="high" Text="========================### IntelliLock Start" />
+    <Exec Command="$(IntelliLockLocation) -file &quot;$(ProjectDir)$(IntermediateOutputPath)$(TargetFileName)&quot; -project $(IntelliLockProject) -destination &quot;$(ProjectDir)$(IntermediateOutputPath)$(TargetFileName)&quot;" Condition="'$(ConfigurationName)' == 'Release' " />
+    <Message Importance="high" Text="========================### IntelliLock End" />
+  </Target>
+
+  <Target Name="ProtectAssemblies" AfterTargets="LockAssemblies" BeforeTargets="Publish">
+    <Sleep Delay="200" />
+    <!--Call .NET Reactor-->
+    <Message Importance="high" Text="========================### .NET Reactor Start" />
+    <Exec Command="$(ReactorLocation) -file &quot;$(ProjectDir)$(IntermediateOutputPath)$(TargetFileName)&quot; -project $(ReactorProject) -targetfile &quot;$(ProjectDir)$(IntermediateOutputPath)$(TargetFileName)&quot;" Condition="'$(ConfigurationName)' == 'Release' " />
+    <Message Importance="high" Text="========================### .NET Reactor End" />
+  </Target>
+
+  <UsingTask TaskName="Sleep" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <!-- Delay in milliseconds -->
+      <Delay ParameterType="System.Int32" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[System.Threading.Thread.Sleep(this.Delay);]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  
 </Project>
